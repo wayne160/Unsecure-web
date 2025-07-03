@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
-import secrets
 import jwt
 
 app = Flask(__name__)
@@ -24,7 +23,7 @@ def login():
     user = cursor.fetchone()
     if user == None:
         return jsonify('invalid user')
-    return jsonify("loggedin")
+    return jwt.encode({'user_id': user[0]}, SECRET, algorithm='HS256')
 
 @app.post("/register")
 def register():
@@ -43,24 +42,8 @@ def register():
     conn.commit()
     cursor.close()
     conn.close()
-    session_id = secrets.token_urlsafe(32)
-    return jwt.encode({'user_id': user_id, 'session_id': session_id}, SECRET, algorithm='HS256')
+    return jwt.encode({'user_id': user_id}, SECRET, algorithm='HS256')
 
-# users = [{
-#     'username': 'wayne'
-# },
-# {
-#     'username': 'nicole'
-# },
-# {
-#     'username': 'nicole'
-# },
-# {
-#     'username': 'nicole'
-# },
-# {
-#     'username': 'nicole'
-# }]
 @app.get("/users")
 def getUsers():
     query = request.args.get('query')
@@ -70,7 +53,7 @@ def getUsers():
         password="22573316199zZ@",
         database="schema1"
     )
-    sql = f'SELECT username FROM users WHERE username LIKE \'%{query}%\''
+    sql = f'SELECT id, username FROM users WHERE username LIKE \'%{query}%\''
     print(sql)
     cursor = conn.cursor()
     cursor.execute(sql)
@@ -81,5 +64,49 @@ def getUsers():
     print(users)
     return jsonify(users)
 
+@app.get("/user")
+def getUser():
+    token = request.args.get('token')
+    userId = jwt.decode(token, SECRET, algorithms=['HS256'])['user_id']
+    return jsonify(userId)
+
+@app.post("/send")
+def send():
+    data = request.get_json()
+    content = data['content']
+    sender_id = data['sender_id']
+    receiver_id = data['receiver_id']
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="22573316199zZ@",
+        database="schema1"
+    )
+    sql = f'INSERT INTO messages (content, sender_id, receiver_id) VALUES (\'{content}\', {sender_id}, {receiver_id})'
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify('success')
+
+@app.get("/messages")
+def messages():
+    sender_id = request.args.get('sender_id')
+    receiver_id = request.args.get('receiver_id')
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="22573316199zZ@",
+        database="schema1"
+    )
+    sql = f'SELECT content, timestamp, sender_id, receiver_id FROM messages WHERE (sender_id = {sender_id} and receiver_id = {receiver_id}) or (sender_id = {receiver_id} or receiver_id = {sender_id})'
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    messages = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return messages
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

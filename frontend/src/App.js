@@ -2,6 +2,7 @@ import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import Message from './pages/Message';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/message/:userId/:username" element={<Message />} />
       </Routes>
     </div>
   )

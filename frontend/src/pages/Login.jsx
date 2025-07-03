@@ -27,17 +27,19 @@ const Login = () => {
     axios.post('http://127.0.0.1:8000/login', {username, password})
       .then(res => {
         if (res.data == 'invalid user') {
-          console.log(res.data);
+          setErrors({
+            username: 'incorrect username or password',
+            password: 'incorrect username or password'
+          });
         } else {
           localStorage.setItem('token', res.data);
+          setErrors({});
           navigate('/home');
         }
       })
       .catch(error => {
         console.error('Error fetching user data:', error);
       }); 
-    setErrors({});
-    setErrors({});
   };
   return  (
     <Container className='border rounded border-secondary border-5 mt-5 w-50 mx-auto position-relative'>

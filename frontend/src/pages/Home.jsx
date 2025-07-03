@@ -14,8 +14,7 @@ const Home = () => {
     }, [])
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Searching for:', query);
-        axios.get('http://127.0.0.1:8000/users', { 
+        axios.get('http://127.0.0.1:8000/users', {
             params: { query }
         })
         .then(res => {
@@ -25,7 +24,6 @@ const Home = () => {
             console.error(error);
         });
     };
-    console.log(users);
     return (<>
         <Container className="mt-4">
             <Form onSubmit={handleSubmit}>
@@ -50,19 +48,21 @@ const Home = () => {
                 </Row>
             </Form>
         </Container>
+        {console.log(users)}
         <Container>
             <Row>
                 {users.map((user, index) => (
                     <Col key={index} sm={4}>
                         <Card className="m-3">
-                            <Card.Body>
-                                <Card.Title dangerouslySetInnerHTML={{ __html: user }} />
-                                <Button variant="primary">Add contact</Button>
+                            <Card.Body className="text-center">
+                                <div className="m-3">{user[1]}</div>
+                                <Button variant="primary" onClick={(() => {
+                                    navigate(`/message/${user[0]}/${user[1]}`);
+                                })}>Send message</Button>
                             </Card.Body>
                         </Card>
                     </Col>
                 ))}
-                {/* <div class="card-title h5"><img src="x" onError={() => alert(1)} /></div> */}
             </Row>
         </Container>
         <Button onClick={() => {
