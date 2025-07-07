@@ -2,10 +2,17 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 import jwt
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-SECRET = 'Waycole1314'
+SECRET = os.environ.get("JWT_SECRET")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+print('rew')
+print(SECRET)
 
 @app.post("/login")
 def login():
@@ -15,7 +22,7 @@ def login():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="22573316199zZ@",
+        password=DB_PASSWORD,
         database="schema1"
     )
     cursor = conn.cursor()
@@ -33,7 +40,7 @@ def register():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="22573316199zZ@",
+        password=DB_PASSWORD,
         database="schema1"
     )
     cursor = conn.cursor()
@@ -50,7 +57,7 @@ def getUsers():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="22573316199zZ@",
+        password=DB_PASSWORD,
         database="schema1"
     )
     sql = f'SELECT id, username FROM users WHERE username LIKE \'%{query}%\''
@@ -79,7 +86,7 @@ def send():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="22573316199zZ@",
+        password=DB_PASSWORD,
         database="schema1"
     )
     sql = f'INSERT INTO messages (content, sender_id, receiver_id) VALUES (\'{content}\', {sender_id}, {receiver_id})'
@@ -97,7 +104,7 @@ def messages():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="22573316199zZ@",
+        password=DB_PASSWORD,
         database="schema1"
     )
     sql = f'SELECT content, timestamp, sender_id, receiver_id FROM messages WHERE (sender_id = {sender_id} and receiver_id = {receiver_id}) or (sender_id = {receiver_id} and receiver_id = {sender_id})'
