@@ -100,7 +100,7 @@ def messages():
         password="22573316199zZ@",
         database="schema1"
     )
-    sql = f'SELECT content, timestamp, sender_id, receiver_id FROM messages WHERE (sender_id = {sender_id} and receiver_id = {receiver_id}) or (sender_id = {receiver_id} or receiver_id = {sender_id})'
+    sql = f'SELECT content, timestamp, sender_id, receiver_id FROM messages WHERE (sender_id = {sender_id} and receiver_id = {receiver_id}) or (sender_id = {receiver_id} and receiver_id = {sender_id})'
     cursor = conn.cursor()
     cursor.execute(sql)
     messages = cursor.fetchall()
