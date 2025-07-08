@@ -33,7 +33,7 @@ const Register = () => {
       setErrors(error);
       return;
     }
-    axios.post(`${process.env.BACKEND_URL}/register`, {username, password})
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {username, password})
       .then(res => {
         localStorage.setItem('token', res.data);
         navigate('/home');

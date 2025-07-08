@@ -14,7 +14,7 @@ const Home = () => {
     }, [])
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.get(`${process.env.BACKEND_URL}/users`, {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/users`, {
             params: { query }
         })
         .then(res => {
@@ -48,7 +48,6 @@ const Home = () => {
                 </Row>
             </Form>
         </Container>
-        {console.log(users)}
         <Container>
             <Row>
                 {users.map((user, index) => (

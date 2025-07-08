@@ -13,7 +13,7 @@ const Message = () => {
     const start = React.useRef(true);
 
     React.useEffect(() => {
-        axios.get(`${process.env.BACKEND_URL}/user`, {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/user`, {
             params: { 'token':localStorage.getItem('token') }
         })
         .then((res) => {
@@ -23,7 +23,7 @@ const Message = () => {
     React.useEffect(() => {
         if (!user1 || !user2) return;
         const interval = setInterval(() => {
-        axios.get(`${process.env.BACKEND_URL}/messages`, {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/messages`, {
             params: { sender_id: user1, receiver_id: user2 }
         })
             .then((res) => {
@@ -40,7 +40,7 @@ const Message = () => {
         }
     }, [messages]);
     const handleSendMessage = () => {
-        axios.post(`${process.env.BACKEND_URL}/send`, {
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/send`, {
             content,
             sender_id: user1,
             receiver_id: user2

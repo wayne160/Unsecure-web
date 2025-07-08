@@ -24,7 +24,7 @@ const Login = () => {
       setErrors(error);
       return;
     }
-    axios.post(`${process.env.BACKEND_URL}/login`, {username, password})
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, {username, password})
       .then(res => {
         if (res.data == 'invalid user') {
           setErrors({
