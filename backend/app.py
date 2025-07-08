@@ -8,9 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 SECRET = os.environ.get("JWT_SECRET")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
+CORS(app, origins=[FRONTEND_URL])
 print('rew')
 print(SECRET)
 

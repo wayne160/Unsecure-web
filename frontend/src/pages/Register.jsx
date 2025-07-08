@@ -33,7 +33,7 @@ const Register = () => {
       setErrors(error);
       return;
     }
-    axios.post('http://127.0.0.1:8000/register', {username, password})
+    axios.post(`${process.env.BACKEND_URL}/register`, {username, password})
       .then(res => {
         localStorage.setItem('token', res.data);
         navigate('/home');

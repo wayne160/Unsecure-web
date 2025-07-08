@@ -24,7 +24,7 @@ const Login = () => {
       setErrors(error);
       return;
     }
-    axios.post('http://127.0.0.1:8000/login', {username, password})
+    axios.post(`${process.env.BACKEND_URL}/login`, {username, password})
       .then(res => {
         if (res.data == 'invalid user') {
           setErrors({

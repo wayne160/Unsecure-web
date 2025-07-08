@@ -14,7 +14,7 @@ const Home = () => {
     }, [])
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.get('http://127.0.0.1:8000/users', {
+        axios.get(`${process.env.BACKEND_URL}/users`, {
             params: { query }
         })
         .then(res => {

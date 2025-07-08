@@ -13,7 +13,7 @@ const Message = () => {
     const start = React.useRef(true);
 
     React.useEffect(() => {
-        axios.get('http://127.0.0.1:8000/user', {
+        axios.get(`${process.env.BACKEND_URL}/user`, {
             params: { 'token':localStorage.getItem('token') }
         })
         .then((res) => {
@@ -23,7 +23,7 @@ const Message = () => {
     React.useEffect(() => {
         if (!user1 || !user2) return;
         const interval = setInterval(() => {
-        axios.get('http://localhost:8000/messages', {
+        axios.get(`${process.env.BACKEND_URL}/messages`, {
             params: { sender_id: user1, receiver_id: user2 }
         })
             .then((res) => {
@@ -40,7 +40,7 @@ const Message = () => {
         }
     }, [messages]);
     const handleSendMessage = () => {
-        axios.post('http://127.0.0.1:8000/send', {
+        axios.post(`${process.env.BACKEND_URL}/send`, {
             content,
             sender_id: user1,
             receiver_id: user2
