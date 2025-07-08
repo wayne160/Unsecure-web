@@ -11,8 +11,10 @@ app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 SECRET = os.environ.get("JWT_SECRET")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
+HOST = os.environ.get("Host")
+USER = os.environ.get("User")
+DATABASE = os.environ.get("Database")
 CORS(app, origins=[FRONTEND_URL])
-print(SECRET)
 
 @app.post("/login")
 def login():
@@ -20,10 +22,10 @@ def login():
     sql = f'SELECT id, username FROM users WHERE username = \'{data['username']}\' AND password = \'{data['password']}\''
     # values = (data['username'], data['password'])
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=HOST,
+        user=USER,
         password=DB_PASSWORD,
-        database="schema1"
+        database=DATABASE
     )
     cursor = conn.cursor()
     cursor.execute(sql)
@@ -38,10 +40,10 @@ def register():
     sql = f'INSERT INTO users (username, password) VALUES (%s, %s)'
     values = (data['username'], data['password'])
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=HOST,
+        user=USER,
         password=DB_PASSWORD,
-        database="schema1"
+        database=DATABASE
     )
     cursor = conn.cursor()
     cursor.execute(sql, values)
@@ -55,10 +57,10 @@ def register():
 def getUsers():
     query = request.args.get('query')
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=HOST,
+        user=USER,
         password=DB_PASSWORD,
-        database="schema1"
+        database=DATABASE
     )
     sql = f'SELECT id, username FROM users WHERE username LIKE \'%{query}%\''
     print(sql)
@@ -84,10 +86,10 @@ def send():
     sender_id = data['sender_id']
     receiver_id = data['receiver_id']
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=HOST,
+        user=USER,
         password=DB_PASSWORD,
-        database="schema1"
+        database=DATABASE
     )
     sql = f'INSERT INTO messages (content, sender_id, receiver_id) VALUES (\'{content}\', {sender_id}, {receiver_id})'
     cursor = conn.cursor()
@@ -102,10 +104,10 @@ def messages():
     sender_id = request.args.get('sender_id')
     receiver_id = request.args.get('receiver_id')
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=HOST,
+        user=USER,
         password=DB_PASSWORD,
-        database="schema1"
+        database=DATABASE
     )
     sql = f'SELECT content, timestamp, sender_id, receiver_id FROM messages WHERE (sender_id = {sender_id} and receiver_id = {receiver_id}) or (sender_id = {receiver_id} and receiver_id = {sender_id})'
     cursor = conn.cursor()
