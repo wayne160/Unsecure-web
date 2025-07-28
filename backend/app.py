@@ -16,11 +16,12 @@ USER = os.environ.get("User")
 DATABASE = os.environ.get("Database")
 CORS(app, origins=[FRONTEND_URL])
 
+print(HOST)
+
 @app.post("/login")
 def login():
     data = request.get_json()
     sql = f'SELECT id, username FROM users WHERE username = \'{data['username']}\' AND password = \'{data['password']}\''
-    # values = (data['username'], data['password'])
     conn = mysql.connector.connect(
         host=HOST,
         user=USER,
