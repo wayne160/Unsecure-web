@@ -8,7 +8,7 @@ const Home = () => {
     const [query, setQuery] = React.useState('');
     const [users, setUsers] = React.useState([]);
     React.useEffect(() => {
-        if (!localStorage.getItem('token')) {
+        if (localStorage.getItem('token') != null) {
             navigate('/login');
         }
     }, [])
