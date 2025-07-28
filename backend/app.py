@@ -16,6 +16,7 @@ USER = os.environ.get("User")
 DATABASE = os.environ.get("Database")
 CORS(app, origins=[FRONTEND_URL])
 
+print('wayne is the best')
 print(HOST)
 
 @app.post("/login")
