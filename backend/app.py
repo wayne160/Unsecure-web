@@ -18,6 +18,7 @@ CORS(app, origins=[FRONTEND_URL])
 
 print('wayne is the best')
 print(HOST)
+print(os.environ.get("wayne"))
 
 @app.post("/login")
 def login():
